@@ -72,3 +72,6 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Difference of Map wouldn't be uploaded. (ignore map instead of DefaultEngine.ini)
+*.umap
