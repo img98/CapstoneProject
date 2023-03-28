@@ -27,10 +27,12 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	if (BTAsset&&Blackboard)
+	AEnemyCharacter* EnemyCharacter = Cast<AEnemyCharacter>(InPawn);
+	check(EnemyCharacter);
+	UBlackboardComponent* BlackboardComp = Blackboard; //ue4 와 달리 Blackboard를 바로 쓰는건 안되고 한번 저장해줘야 되나봄.
+	if (UseBlackboard(BBAsset, BlackboardComp))
 	{
 		RunBehaviorTree(BTAsset);
-		Blackboard->InitializeBlackboard(*BTAsset->BlackboardAsset);
 	}
 
 }
@@ -49,12 +51,18 @@ void AEnemyAIController::OnPerception(AActor* Actor, FAIStimulus Stimuls)
 
 void AEnemyAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
+
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(Actor);
+	if (PlayerCharacter == nullptr) { return; }
+
 	if (Stimulus.WasSuccessfullySensed())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Stimulus Sensed!"));
+		Blackboard->SetValueAsObject(TEXT("Target"), PlayerCharacter);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No Stimulus"));
+		Blackboard->SetValueAsObject(TEXT("Target"), nullptr);
 	}
 }

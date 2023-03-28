@@ -35,12 +35,14 @@ protected:
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
 	UPROPERTY(EditDefaultsOnly, Category = CustomAI)
+	UBlackboardData* BBAsset;
+	UPROPERTY(EditDefaultsOnly, Category = CustomAI)
 	UBehaviorTree* BTAsset;
+	
 	/** 
 	UPROPERTY(EditDefaultsOnly, Category = CustomAI)
-	UBlackboardData* BBAsset;
+	UBlackboardComponent* BlackboardComponent;
 	*/
-
 	UPROPERTY(EditDefaultsOnly, Category = CustomAI)
 	UAIPerceptionComponent* AIPerception;
 
