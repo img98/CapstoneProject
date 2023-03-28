@@ -6,11 +6,6 @@
 #include "Character/BaseCharacter.h"
 #include "EnemyCharacter.generated.h"
 
-class AAIController;
-class UBehaviorTree;
-/**
- * 
- */
 UCLASS()
 class CAPSTONETPS_API AEnemyCharacter : public ABaseCharacter
 {
@@ -24,12 +19,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	AAIController* EnemyController; //지워도 될것같다.
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	UBehaviorTree* BehaviorTree;
-	
 private:
 
 };

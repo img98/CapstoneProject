@@ -7,6 +7,7 @@
 #include "ShooterEnemy.generated.h"
 
 class UAIPerceptionComponent;
+class AEnemyAIController;
 
 UCLASS()
 class CAPSTONETPS_API AShooterEnemy : public AEnemyCharacter
@@ -16,13 +17,10 @@ class CAPSTONETPS_API AShooterEnemy : public AEnemyCharacter
 public:
 	AShooterEnemy();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Custom)
-	UAIPerceptionComponent* AIPerception;
-
-	UFUNCTION()
-	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-
 protected:
+	UPROPERTY()
+	AEnemyAIController* EnemyController;
+
 
 private:
 

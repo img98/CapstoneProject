@@ -3,7 +3,6 @@
 
 #include "Character/Enemy/EnemyCharacter.h"
 #include "AIController.h"
-#include "BehaviorTree/BlackboardComponent.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
