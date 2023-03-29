@@ -5,6 +5,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
+//AI Perception Stimuli Source
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
+
 // Inputs
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -17,6 +21,11 @@ APlayerCharacter::APlayerCharacter()
 
 	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
 	MainCamera->SetupAttachment(SpringArm);
+
+	//AI Perception Stimuli Source
+	AIStimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("AIStimuliSource"));
+	AIStimuliSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+	AIStimuliSource->RegisterWithPerceptionSystem();
 }
 
 void APlayerCharacter::BeginPlay()
