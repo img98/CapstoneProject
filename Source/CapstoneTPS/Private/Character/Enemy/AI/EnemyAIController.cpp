@@ -8,12 +8,15 @@
 
 AEnemyAIController::AEnemyAIController()
 {
+	/** SetUp AIPerception*/
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 	UAISenseConfig_Sight* SightSense = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightSense"));
 	SightSense->SightRadius = 1000.f;
 	SightSense->LoseSightRadius = 1500.f;
+	SightSense->PeripheralVisionAngleDegrees = 60.f;
 	SightSense->DetectionByAffiliation.bDetectNeutrals = true; // Register한 모두를 찾을수 있게
 	AIPerception->ConfigureSense(*SightSense);
+
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnTargetPerceptionUpdated);
 }
 
