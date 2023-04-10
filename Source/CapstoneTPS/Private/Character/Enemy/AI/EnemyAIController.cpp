@@ -5,17 +5,25 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 
 AEnemyAIController::AEnemyAIController()
 {
 	/** SetUp AIPerception*/
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
+
 	UAISenseConfig_Sight* SightSense = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightSense"));
-	SightSense->SightRadius = 1000.f;
-	SightSense->LoseSightRadius = 1500.f;
+	SightSense->SightRadius = 600.f;
+	SightSense->LoseSightRadius = 1000.f;
 	SightSense->PeripheralVisionAngleDegrees = 60.f;
 	SightSense->DetectionByAffiliation.bDetectNeutrals = true; // Register한 모두를 찾을수 있게
 	AIPerception->ConfigureSense(*SightSense);
+
+	UAISenseConfig_Hearing* HearingSense = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingSense"));
+	HearingSense->HearingRange = 1000.f;
+	HearingSense->DetectionByAffiliation.bDetectNeutrals = true;
+	HearingSense->DetectionByAffiliation.bDetectFriendlies = true; //아군의 총성과 방해용캔소리를 듣기위함
+	AIPerception->ConfigureSense(*HearingSense);
 
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnTargetPerceptionUpdated);
 }
@@ -49,18 +57,19 @@ void AEnemyAIController::OnPerception(AActor* Actor, FAIStimulus Stimuls)
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Ssss"));
 }
 
 void AEnemyAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
+	if (!Stimulus.WasSuccessfullySensed()) return;
+	TSubclassOf<UAISense> SenseClass = UAIPerceptionSystem::GetSenseClassForStimulus(GetWorld(), Stimulus);
+	FName SenseName = SenseClass->GetFName();
+	UE_LOG(LogTemp, Warning, TEXT("Get SenseClass for Stimulus [%s]"), *SenseName.ToString());
 
-	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(Actor);
-	if (PlayerCharacter == nullptr) { return; }
-
-	if (Stimulus.WasSuccessfullySensed())
+	//TODO: 인식된 센스에 따라서 로직 작동
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(Actor))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Stimulus Sensed!"));
+		UE_LOG(LogTemp, Warning, TEXT("Stimulus Sensed! : [%s]"), *PlayerCharacter->GetName());
 		Blackboard->SetValueAsObject(TEXT("Target"), PlayerCharacter);
 	}
 	else
