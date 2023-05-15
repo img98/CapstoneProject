@@ -10,7 +10,7 @@ UCLASS()
 class CAPSTONETPS_API ABaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
+	
 public:
 	ABaseCharacter();
 

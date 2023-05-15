@@ -10,6 +10,9 @@
 class UCameraComponent;
 class USpringArmComponent;
 
+// AI Perception
+class UAIPerceptionStimuliSourceComponent;
+
 // Inputs
 class UEnhancedInputLocalPlayerSubsystem;
 class UCameraComponent;
@@ -54,6 +57,9 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Custom)
+	UAIPerceptionStimuliSourceComponent* AIStimuliSource;
 
 private:
 	UEnhancedInputLocalPlayerSubsystem* InputSubSystem;
